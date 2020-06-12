@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
-from FileSharing.mysite.models import Document
-from FileSharing.mysite.forms import DocumentForm
+from mysite.models import Document
+from mysite.forms import DocumentForm
 
 
 def home(request):
     documents = Document.objects.all()
-    return render(request, 'users/index.html', { 'documents': documents })
+    return render(request, 'mysite/index.html', { 'documents': documents })
 
 
 def simple_upload(request):
@@ -17,10 +17,10 @@ def simple_upload(request):
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
-        return render(request, 'users/simple_upload.html', {
+        return render(request, 'mysite/simple_upload.html', {
             'uploaded_file_url': uploaded_file_url
         })
-    return render(request, 'users/simple_upload.html')
+    return render(request, 'mysite/simple_upload.html')
 
 
 def model_form_upload(request):
@@ -31,6 +31,6 @@ def model_form_upload(request):
             return redirect('home')
     else:
         form = DocumentForm()
-    return render(request, 'users/model_form_upload.html', {
+    return render(request, 'mysite/model_form_upload.html', {
         'form': form
     })

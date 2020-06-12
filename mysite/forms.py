@@ -1,5 +1,5 @@
 from django import forms
-from FileSharing.mysite.models import Document
+from mysite.models import Document
 
 class DocumentForm(forms.ModelForm):
     class Meta:
