@@ -40,8 +40,7 @@ try:
         def add_user(table, field_names):
             key = ''
             value = ''
-            if "id" in field_names:
-                del field_names['id']
+
             for i in field_names:
                 field_names[i] = input('Enter ' + i + ':')
             for i, j in field_names.items():
@@ -51,12 +50,13 @@ try:
             try:
                 cursor.execute(insert_data)
                 connection.commit()
-            except :
+            except:
                 print('this person is exist')
 
 
         def conditions(table, field_names):
-
+            if "id" in field_names:
+                del field_names['id']
             i = 1
             condition = []
             while True:
@@ -72,7 +72,7 @@ try:
 
 
         def read_users(table, field_names):
-            num = int(input('1)Read one user\n'
+            num = int(input('1)Read one users\n'
                             '2)Read all users\n'
                             '3)Back\n'))
             change_values = {}
@@ -114,7 +114,7 @@ try:
 
 
         def delete_user(table, field_names):
-            delete_user_sql = "delete from {0} where {1}".format(table, conditions(table,field_names))
+            delete_user_sql = "delete from {0} where {1}".format(table, conditions(table, field_names))
             print(delete_user_sql)
             cursor.execute(delete_user_sql)
             connection.commit()
@@ -133,10 +133,10 @@ try:
             # add_user(table, field_names)работает
             # restriction(field_names)
             while True:
-                num = int(input("\n1)Add user\n"
+                num = int(input("\n1)Add users\n"
                                 "2)Read users\n"
-                                "3)Update user\n"
-                                "4)Delete user\n"
+                                "3)Update users\n"
+                                "4)Delete users\n"
                                 "5)Exit\n"))
                 if num == 5:
                     break
@@ -148,7 +148,35 @@ try:
         # except KeyError:
         #     print("wrong data selected")
         # finally:
-        menu()
+        # menu()
+        def get_file_by_id(id):
+            file = {}
+            value = []
+            id = 'id=' + str(id)
+            table = 'file'
+            select_file_by_id = 'select * from {0} where {1}'.format(table, id)
+            cursor.execute(select_file_by_id)
+            fields = cursor.description
+            for field in fields:
+                print(field[0], end=' ')
+            for i in cursor:
+                print()
+                for j in i:
+                    value.append(j)
+            num=0
+
+            for field in fields:
+                file[field[0]] = value[num]
+                num+=1
+
+            print(file)
+            print(value)
+
+            return cursor
+
+
+        get_file_by_id(1)
+
 
 finally:
     cursor.close()

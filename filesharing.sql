@@ -16,7 +16,7 @@ CREATE SCHEMA IF NOT EXISTS `filesharing` DEFAULT CHARACTER SET utf8 ;
 USE `filesharing` ;
 
 -- -----------------------------------------------------
--- Table `filesharing`.`user`
+-- Table `filesharing`.`users`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `filesharing`.`user` ;
 
