@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 import pymysql.cursors
-from mysite.models import Document
-from mysite.forms import DocumentForm
+# from mysite.model import Document
+# from mysite.forms import DocumentForm
 
 #
 # def home(request):

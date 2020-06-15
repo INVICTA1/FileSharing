@@ -13,22 +13,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url,include
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from mysite import views
+# from mysite import views
 from rest_framework_swagger.views import get_swagger_view
-schema_view = get_swagger_view(title='Pastebin API')
+
+schema_view = get_swagger_view(title='File sharing API')
 urlpatterns = [
-    url(r'^file/', include('users.urls', namespace='users',)),
-    url(r'^api$', schema_view),
-    # path('admin/', admin.site.urls),
+    # url(r'^file/', include('users.urls', namespace='users', )),
+    url(r'^api/$', schema_view),
+    url(r'users/',include("api.urls",namespace='users')),
+    path('admin/', admin.site.urls),
     # url(r'^$', views.home, name='home'),
     # url(r'^uploads/simple/$', views.simple_upload, name='simple_upload'),
     # url(r'^uploads/form/$', views.model_form_upload, name='model_form_upload'),
-    # url(r'^admin/', admin.site.urls),
 
 ]
 
