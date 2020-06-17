@@ -1,20 +1,29 @@
-from .database import get_file_by_id
-from django.shortcuts import render
 from .admin import get_id
-import json
-from django.http import JsonResponse, HttpResponse
-from django.views.generic import View
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from .forms import LoginForm
 
-
-def get_file(request, file_id):
-    if request.method != 'POST':
-        resc = "post" + str(file_id)
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            print(cd['username'],cd['password'])
+            user = authenticate(username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    return HttpResponse('Authenticated successfully')
+                else:
+                    return HttpResponse('Disabled account')
+            else:
+                return HttpResponse('Invalid login')
     else:
-        resc = "get" + str(file_id)
+        form = LoginForm()
+    return render(request, 'users/login.html', {'form': form})
 
-    cursor = get_id(file_id)
-    print(resc)
-    print(cursor)
-
-    return JsonResponse(cursor)
-    # return render(request, 'users/get_file.html', cursor)
+# def get_file(request, file_id):
+#     cursor = get_id(file_id)
+#     # return JsonResponse(cursor)
+#     return render(request, 'users/get_file.html', context=cursor)
+#
