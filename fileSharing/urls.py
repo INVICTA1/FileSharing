@@ -18,19 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-# from mysite import views
-# from rest_framework_swagger.views import get_swagger_view
-#
-# schema_view = get_swagger_view(title='File sharing API')
+
 urlpatterns = [
-    # url(r'^file/', include('users.urls', namespace='users', )),
-    # url(r'^api/$', schema_view),
     url(r'users/', include("users.urls", namespace='users')),
     path('admin/', admin.site.urls),
-    url(r"upload",include("mysite.urls",namespace='mysite'))
-    # url(r'^$', views.home, name='home'),
-    # url(r'^uploads/simple/$', views.simple_upload, name='simple_upload'),
-    # url(r'^uploads/form/$', views.model_form_upload, name='model_form_upload'),
+    url(r"",include("mysite.urls",namespace='mysite'))
 
 ]
 

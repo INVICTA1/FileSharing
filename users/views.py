@@ -1,4 +1,3 @@
-from .admin import get_id
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
@@ -21,9 +20,3 @@ def user_login(request):
     else:
         form = LoginForm()
     return render(request, 'users/login.html', {'form': form})
-
-# def get_file(request, file_id):
-#     cursor = get_id(file_id)
-#     # return JsonResponse(cursor)
-#     return render(request, 'users/get_file.html', context=cursor)
-#

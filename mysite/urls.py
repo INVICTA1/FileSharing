@@ -5,6 +5,6 @@ from . import views
 
 app_name = 'fileSharing'
 urlpatterns = [
-    url(r'^/$', views.simple_upload, name='simple_upload'),
+    url(r'', views.simple_upload, name='simple_upload'),
 
 ]
