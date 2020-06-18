@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div> {% if request.user.is_authenticated %}
+    <h1>Welcome1 {{ new_user.username }}!</h1>
+    {% endif %}
+</div>
+<div> {% if user.is_authenticated %}
+    <h1>Welcome2 {{ new_user.username }}!</h1>
+    {% endif %}
+</div>
+    <p>Your account has been successfully created. Now you can <a href="{% url 'users:login' %}">log in</a>.</p>
+{% endblock %}

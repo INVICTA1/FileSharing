@@ -1,11 +1,27 @@
-{% block title %}Log-in{% endblock %}
+{% block title %}{% endblock %}
 {% block content %}
-    <h1>Log-in</h1>
-    <p>Please, use the following form to log-in:</p>
-    <form action="." method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Log-in"></p>
-    </form>
+<h1>Log-in</h1>
+<p>Please, use the following form to log-in:</p>
+<form action="" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Log-in"></p>
 
+</form>
+{{ login }}
+
+<div>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p><input type="submit" value="Log-out"></p>
+    </form>
+</div>
+
+<div> {% if request.user.is_authenticated %}
+    <h1>Welcome {{ new_user.username }}!</h1>
+    {% endif %}
+</div>
+<a href="{% url 'users:register' %}">register</a>
+<a href="{% url 'mysite:upload_file' %}">home</a>
+<h1>Welcome {{ new_user.username }}!</h1>
 {% endblock %}
