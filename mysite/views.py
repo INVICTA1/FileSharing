@@ -1,41 +1,48 @@
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
-from .models import Document
-from django.urls import reverse
+from django.utils.datastructures import MultiValueDictKeyError
 
-def home(request):
-    documents = Document.objects.all()
-    return render(request, 'mysite/index.html', {'documents': documents})
+from .models import Document
+from datetime import timedelta
 
 
 def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'mysite/upload_file.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, 'mysite/upload_file.html')
+    try:
+        if request.method == 'POST' and request.FILES['file']:
+            doc = Document()
+            myfile = request.FILES['file']
+            if myfile.size > 100000000:
+                return render(request, 'mysite/home.html', {'error_size': "Please keep filesize under 100Mb. "})
+            else:
+                fs = FileSystemStorage()
+                filename = fs.save(myfile.name, myfile)
+                uploaded_file_url = fs.url(filename)
+                doc.name = filename
+                doc.url = uploaded_file_url
+                duration = request.POST['duration']
+                file_duration = get_duration(duration)
+                doc.expires_doc = doc.uploaded_at + file_duration
+                if request.user.is_authenticated:
+                    doc.owner = request.user
+                    doc.save()
+                else:
+                    doc.save()
+                return render(request, 'mysite/home.html', {
+                    'uploaded_file_url': uploaded_file_url
+                })
+        return render(request, 'mysite/home.html')
+    except MultiValueDictKeyError:
+        return render(request, 'mysite/home.html', {'error_file': "Please select a file. "})
 
 
-@login_required
-def user_files(request):
-    if request.method != 'POST':
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'mysite/index.html', {
-            'uploaded_file_url': uploaded_file_url
-        })
-    return render(request, 'mysite/index.html')
-
-@login_required
-def logout_view(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('mysite:ipload_file'))
+def get_duration(dur):
+    durations = {
+        '1d': timedelta(days=1),
+        '3d': timedelta(days=3),
+        '7d': timedelta(days=7),
+        '30d': timedelta(days=30)
+    }
+    for d in durations:
+        if d == dur:
+            return durations[d]
+    return timedelta()

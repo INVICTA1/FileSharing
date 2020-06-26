@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <!-- JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script src="/script.js"></script>
+    <link rel="stylesheet" href="{%  static 'css/home.css' %}">
+    <link rel="stylesheet" href="{%  static 'javascript/home.js' %}">
+
+</head>
+<body>
+
+<div class="menu">
+    {% if user.is_authenticated %}
+    {%else %}
+    <a href="{% url 'users:login' %}" class="btn btn-primary">Sign in</a>
+    <a href="{% url 'users:register' %}" class="btn btn-primary">Sign up</a>
+    {% endif %}
+
+</div>
+<div>
+    {% if user.is_authenticated %}
+    <h3>Wellcom, <b>{{ user.username }}.</b></h3>
+    {% endif %}
+</div>
+<footer></footer>
+
+{% if request.user.is_authenticated %}
+
+<div class="menu">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+        Menu
+    </button>
+    <div class="dropdown-menu dropdown-menu-right">
+        <button class="dropdown-item" type="button">
+            <a href="{% url 'users:logout' %}">Sign out</a>
+        </button>
+        <button class="dropdown-item" type="button">
+            <a href="{% url 'users:user_files' %}">My files</a>
+        </button>
+        <button class="dropdown-item" type="button">
+            <a href="{% url 'users:a_change_password' %}">Change password</a>
+        </button>
+    </div>
+</div>
+
+
+{% endif %}
+{% block content %}
+{% endblock %}
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data" class="btn btn-info">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleInputFile">File input</label>
+            <input type="file" id="exampleInputFile" name="file">
+            <p class="help-block"> Select the file you wish to share </p>
+        </div>
+
+        <div class="form-group">
+            <label for="duration"> Set how long you want the file to be stored for </label>
+            <select class="form-control" id="duration" name="duration">
+                <option value="1d"> 1 day</option>
+                <option value="3d"> 3 days</option>
+                <option value="7d"> 7 days</option>
+                <option value="30d"> 30 days</option>
+            </select>
+            <p class="help-block"> After this period, the file will be deleted from the server and the link no longer
+                useable </p>
+        </div>
+
+        <button type="submit" class="btn btn-default"> Upload</button>
+        {% if uploaded_file_url %}
+        {{error_size}}
+
+        {% endif %}
+    </form>
+    <p class="error">{{error_file}}</p>
+    {% if uploaded_file_url %}
+
+    <div class="badge badge-primary text-wrap">File uploaded at:
+        <a href="{{ uploaded_file_url }}" id="myUrl" class="link" download>{{ uploaded_file_url }}
+            <span class="glyphicon glyphicon-download large"></span>
+        </a>
+        <button class="btn btn-secondary" onclick="myFunction()"><span class="copy_link">Copy url</span></button>
+    </div>
+    {% endif %}
+</div>
+
+
+</body>
+</html>
+
+
+

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from django.urls import reverse_lazy
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,13 +45,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'mysite',
     'users',
-    # 'rest_framework_swagger',
+    'crispy_forms',
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
-#     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework.authentication.SessionAuthentication',),
-# }
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -66,7 +63,7 @@ ROOT_URLCONF = 'fileSharing.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'mysite/templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'mysite/templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,6 +126,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    'fileSharing/users/static',
+    'fileSharing/mysite/static',
+]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/users/login/'
@@ -136,3 +139,6 @@ LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = reverse_lazy('')
 
 LOGOUT_URL = reverse_lazy('logout')
+CONTENT_TYPES = ['image', 'video']
+MAX_UPLOAD_SIZE = "104857600"
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
