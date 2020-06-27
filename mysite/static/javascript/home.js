@@ -1,11 +1,9 @@
-function myFunction() {
-  var copyText = document.getElementById("myUrl");
-  co
-  copyText.select();
-  document.execCommand("copy");
+function copyTextToClipboard() {
+  var root = location.protocol + '//' + location.host;
+  const el = document.createElement('textarea');
+  el.value =root + document.getElementById("myUrl").text;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
 }
-jQuery(document).ready(function($){
-var url = document.location.href;
-new Clipboard('.copy_link', {text: function(){ return url;}});
-$('.copy_link').click(function(){alert('Cсылка успешно скопирована в буфер обмена.');});
-});
