@@ -21,85 +21,91 @@
     <script src="{%  static 'javascript/home.js' %}"></script>
 </head>
 <body>
+<header></header>
+<main>
+    <div class="menu">
+        {% if user.is_authenticated %}
+        {%else %}
+        <a href="{% url 'users:login' %}" class="btn btn-primary">Sign in</a>
+        <a href="{% url 'users:register' %}" class="btn btn-primary">Sign up</a>
+        {% endif %}
 
-<div class="menu">
-    {% if user.is_authenticated %}
-    {%else %}
-    <a href="{% url 'users:login' %}" class="btn btn-primary">Sign in</a>
-    <a href="{% url 'users:register' %}" class="btn btn-primary">Sign up</a>
-    {% endif %}
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+        <h3>Wellcom, <b>{{ user.username }}.</b></h3>
+        {% endif %}
+    </div>
 
-</div>
-<div>
-    {% if user.is_authenticated %}
-    <h3>Wellcom, <b>{{ user.username }}.</b></h3>
+    {% if request.user.is_authenticated %}
+
+    <div class="menu">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+            Menu
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <button class="dropdown-item" type="button">
+                <a href="{% url 'users:logout' %}">Sign out</a>
+            </button>
+            <button class="dropdown-item" type="button">
+                <a href="{% url 'users:user_files' %}">My files</a>
+            </button>
+            <button class="dropdown-item" type="button">
+                <a href="{% url 'users:a_change_password' %}">Change password</a>
+            </button>
+        </div>
+    </div>
+
+
     {% endif %}
-</div>
+    {% block content %}
+    {% endblock %}
+
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" class="btn btn-info">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputFile">File input</label>
+                <input type="file" id="exampleInputFile" name="file">
+                <p class="help-block"> Select the file you wish to share </p>
+            </div>
+
+            <div class="form-group">
+                <label for="duration"> Set how long you want the file to be stored for </label>
+                <select class="form-control" id="duration" name="duration">
+                    <option value="1d"> 1 day</option>
+                    <option value="3d"> 3 days</option>
+                    <option value="7d"> 7 days</option>
+                    <option value="30d"> 30 days</option>
+                </select>
+                <p class="help-block"> After this period, the file will be deleted from the server and the link no
+                    longer
+                    useable </p>
+            </div>
+
+            <button type="submit" class="btn btn-default"> Upload</button>
+            {% if uploaded_file_url %}
+            {{error_size}}
+
+            {% endif %}
+        </form>
+        <p class="error">{{error_file}}</p>
+        {% if uploaded_file_url %}
+
+        <div class="badge badge-primary text-wrap">File uploaded at:
+            <a href="{{ uploaded_file_url }}" id="myUrl" class="link" download>{{ uploaded_file_url }}
+                <span class="glyphicon glyphicon-download large"></span>
+            </a>
+            <button class="btn btn-secondary" onclick="copyTextToClipboard()"><span class="copy_link">Copy url</span>
+            </button>
+        </div>
+        {% endif %}
+
+    </div>
+</main>
 <footer></footer>
 
-{% if request.user.is_authenticated %}
-
-<div class="menu">
-    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-        Menu
-    </button>
-    <div class="dropdown-menu dropdown-menu-right">
-        <button class="dropdown-item" type="button">
-            <a href="{% url 'users:logout' %}">Sign out</a>
-        </button>
-        <button class="dropdown-item" type="button">
-            <a href="{% url 'users:user_files' %}">My files</a>
-        </button>
-        <button class="dropdown-item" type="button">
-            <a href="{% url 'users:a_change_password' %}">Change password</a>
-        </button>
-    </div>
-</div>
-
-
-{% endif %}
-{% block content %}
-{% endblock %}
-
-<div class="container">
-    <form method="post" enctype="multipart/form-data" class="btn btn-info">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="exampleInputFile">File input</label>
-            <input type="file" id="exampleInputFile" name="file">
-            <p class="help-block"> Select the file you wish to share </p>
-        </div>
-
-        <div class="form-group">
-            <label for="duration"> Set how long you want the file to be stored for </label>
-            <select class="form-control" id="duration" name="duration">
-                <option value="1d"> 1 day</option>
-                <option value="3d"> 3 days</option>
-                <option value="7d"> 7 days</option>
-                <option value="30d"> 30 days</option>
-            </select>
-            <p class="help-block"> After this period, the file will be deleted from the server and the link no longer
-                useable </p>
-        </div>
-
-        <button type="submit" class="btn btn-default"> Upload</button>
-        {% if uploaded_file_url %}
-        {{error_size}}
-
-        {% endif %}
-    </form>
-    <p class="error">{{error_file}}</p>
-    {% if uploaded_file_url %}
-
-    <div class="badge badge-primary text-wrap">File uploaded at:
-        <a href="{{ uploaded_file_url }}" id="myUrl" class="link" download>{{ uploaded_file_url }}
-            <span class="glyphicon glyphicon-download large"></span>
-        </a>
-        <button class="btn btn-secondary" onclick="copyTextToClipboard()"><span class="copy_link">Copy url</span></button>
-    </div>
-    {% endif %}
-</div>
 </body>
 </html>
 

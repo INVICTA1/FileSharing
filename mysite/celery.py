@@ -12,6 +12,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'delete-database-every-day': {
         'task': 'mysite.tasks.delete_database',
-        'schedule': crontab(hour=1),
+        'schedule': crontab(day=1),
     },
 }

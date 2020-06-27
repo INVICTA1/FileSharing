@@ -142,3 +142,4 @@ LOGOUT_URL = reverse_lazy('logout')
 CONTENT_TYPES = ['image', 'video']
 MAX_UPLOAD_SIZE = "104857600"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

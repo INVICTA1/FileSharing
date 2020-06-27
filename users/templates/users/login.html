@@ -21,17 +21,8 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
     <style type="text/css">
-        .container{
-         text-align: center;
-    margin-left:auto;
-    margin-right:auto;
-        }
-        .menu
-{
-    position: absolute;
-    top: 15px;
-    right: 15px;
-}
+
+
     </style>
 </head>
 <body>
@@ -49,15 +40,16 @@
                 {{ form|crispy }}
 
                 <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                <input type="hidden" name="next" value="{% url 'mysite:upload_file' %}" />
             </form>
         </div>
     </div>
+    {{login}}
 </div>
 
 <div class="menu">
     <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
 </div>
-
 {% block content %}
 {% endblock %}
 

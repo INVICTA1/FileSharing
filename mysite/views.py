@@ -1,10 +1,11 @@
+import socket
+
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 from django.utils.datastructures import MultiValueDictKeyError
 
 from .models import Document
 from datetime import timedelta
-
 
 def simple_upload(request):
     try:
@@ -14,11 +15,12 @@ def simple_upload(request):
             if myfile.size > 100000000:
                 return render(request, 'mysite/home.html', {'error_size': "Please keep filesize under 100Mb. "})
             else:
+                # install_password_file(myfile)
                 fs = FileSystemStorage()
                 filename = fs.save(myfile.name, myfile)
                 uploaded_file_url = fs.url(filename)
                 doc.name = filename
-                doc.url = uploaded_file_url
+                doc.url = socket.gethostbyname(socket.gethostname())+uploaded_file_url
                 duration = request.POST['duration']
                 file_duration = get_duration(duration)
                 doc.expires_doc = doc.uploaded_at + file_duration

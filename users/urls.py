@@ -1,10 +1,6 @@
-from django.conf.urls import url, include
-from django.contrib.auth import login, logout
-from django.contrib.auth.views import logout_then_login
+from django.conf.urls import url
 from . import views
-from django.contrib.auth.password_validation import password_changed
-from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth import views as views_user
+from django.urls import path
 
 app_name = 'fileSharing'
 urlpatterns = [
@@ -13,4 +9,6 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^password_changed', views.a_change_password, name='a_change_password'),
     url(r'^account/files', views.user_files, name='user_files'),
+    path(r'delete/<str:name>/', views.del_user_files, name='del_user_files'),
+
 ]

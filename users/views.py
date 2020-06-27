@@ -19,22 +19,14 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'mysite/home.html', context={'login': 'Authenticated successfully'})
-                else:
-                    return render(request, 'mysite/home.html', context={'login': 'Disabled account'})
+                    return render(request, 'mysite/home.html', context={'login': 'Authenticated successfully','form': form})
             else:
-                return render(request, 'users/login.html', context={'form': form, 'login': 'Invalid login or password'})
-
+                return render(request, 'users/login.html', context={'login': 'Invalid login or password','form': form},)
     else:
         form = LoginForm()
 
     return render(request, 'users/login.html', {'form': form})
 
-
-@login_required
-def user_logout(request):
-    logout(request)
-    return render(request, 'mysite/home.html')
 
 
 def register(request):
@@ -56,35 +48,33 @@ def check_password(first_password, second_password):
     else:
         return False
 
+@login_required
+def user_logout(request):
+    logout(request)
+    return render(request, 'mysite/home.html')
+
 
 @login_required
 def a_change_password(request):
     user = User.objects.get(username=request.user)
-    print(user)
-    print(request.method)
-    if request.method != 'POST':
+    if request.method == 'POST':
         form = PasswordChangeForm(user=request.user, data=request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
             return render(request, 'users/password_change_form.html',
-                  {'form': form, 'user': user,'pass_change':'Your password has been successfully changed '})
+                          {'form': form, 'user': user, 'pass_change': 'Your password has been successfully changed '})
         else:
             return render(request, 'users/password_change_form.html',
                           {'form': form, 'user': user, 'pass_change': 'Your password has not been  changed '})
     else:
         form = PasswordChangeForm(user=request.user)
+        print(form)
+
     return render(request, 'users/password_change_form.html',
                   {'form': form, 'user': user})
 
-
-def clean_password2(self):
-    cd = self.cleaned_data
-    if cd['password'] != cd['password2']:
-        raise forms.ValidationError('Passwords don\'t match.')
-    return cd['password2']
-
-
+@login_required
 def user_files(request):
     if request.user.is_authenticated == True:
         files = []
@@ -93,3 +83,15 @@ def user_files(request):
             if doc.owner == request.user:
                 files.append(doc)
         return render(request, 'users/account.html', {'files': files})
+
+@login_required
+def del_user_files(request,name):
+    if request.user.is_authenticated == True:
+        documents = Document.objects.all()
+        for doc in documents:
+            if doc.name == name:
+                doc.delete()
+        return user_files(request)
+
+
+

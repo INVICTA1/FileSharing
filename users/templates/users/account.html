@@ -18,29 +18,82 @@
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{%  static 'css/account.css' %}">
+    <style type="text/css">
+    .menu
+{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+    .btn btn-info{
+        position:absolute;
+        right:10%;
+    }
+    .table{
+    margin: auto;
+    background-color:white;
+    width:70%;
+
+    }
+    .my-custom-scrollbar {
+    position: relative;
+    overflow: auto;
+    height: 600px;
+
+    }
+    .table-wrapper-scroll-y {
+    display: block;
+margin-left: auto;
+    margin-right: auto;
+    text-align: center
+    }
+
+
+
+
+
+
+
+    </style>
 </head>
 <body>
+{% if user.is_authenticated %}
+<div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-<div class="dropdown">
-    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-       aria-haspopup="true" aria-expanded="false">
-        Мои файлы
-    </a>
-
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        {% if user.is_authenticated %}
+    <table class="table table-bordered table-striped mb-0" border="1">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col"> File uploaded at:</th>
+            <th scope="col">Url</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
         {% for file in files %}
-        <div class="dropdown-item">
-        </div>
-        <p>{{file.name}}{{file.uploaded_at}}</p>
-        <p>File uploaded at:
-            <a href="{{file.url}}" id="myUrl" class="link" download>{{file.url}} <span
-                    class="glyphicon glyphicon-download large"></span>
-            </a>
-        </p>
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{file.name}}</td>
+            <td>{{file.uploaded_at}}</td>
+            <td>
+                <a href="{{file.url}}" id="myUrl" class="link" download>Download</a>
+            </td>
+            <td>
+
+                <a class="btn btn-info" href="{% url 'users:del_user_files' name=file.name %}">Delete</a></td>
+        </tr>
         {% endfor %}
-        {% endif %}
-    </div>
+
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+
+<div class="menu">
+
+    <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
+
 </div>
 </body>
 </html>
