@@ -36,7 +36,6 @@ SWAGGER_SETTINGS = {
     ]
 }
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -46,6 +45,8 @@ INSTALLED_APPS = [
     'mysite',
     'users',
     'crispy_forms',
+    'django.contrib.admin',
+
 ]
 
 MIDDLEWARE = [

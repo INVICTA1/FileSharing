@@ -26,33 +26,37 @@
     </style>
 </head>
 <body>
-{% if user.is_authenticated %}
-<h1>Welcome {{ user.username }}!</h1>
-{% endif %}
-<div class="container">
-    <div class="login_form">
-        <div class="card-body">
-            <h4 class="card-title">Log in to your account</h4>
-            <form method="post" class="btn btn-info">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{{ next }}">
+<header></header>
+<main>
+    {% if user.is_authenticated %}
+    <h1>Welcome {{ user.username }}!</h1>
+    {% endif %}
+    <div class="container">
+        <div class="login_form">
+            <div class="card-body">
+                <h4 class="card-title">Log in to your account</h4>
+                <form method="post" class="btn btn-info">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
 
-                {{ form|crispy }}
+                    {{ form|crispy }}
 
-                <button type="submit" class="btn btn-primary btn-block">Log in</button>
-                <input type="hidden" name="next" value="{% url 'mysite:upload_file' %}" />
-            </form>
+                    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                    <input type="hidden" name="next" value="{% url 'mysite:upload_file' %}"/>
+                </form>
+            </div>
         </div>
+        {{login}}
     </div>
-    {{login}}
-</div>
+<!--    <p><a href="{% url 'users:password_reset' %}">Forgotten your password?</a></p>-->
 
-<div class="menu">
-    <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
-</div>
-{% block content %}
-{% endblock %}
-
+    <div class="menu">
+        <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
+    </div>
+    {% block content %}
+    {% endblock %}
+</main>
+<footer></footer>
 </body>
 </html>
 

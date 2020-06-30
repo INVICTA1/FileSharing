@@ -54,46 +54,51 @@ margin-left: auto;
 
 
 
+
     </style>
 </head>
 <body>
-{% if user.is_authenticated %}
-<div class="table-wrapper-scroll-y my-custom-scrollbar">
+<header></header>
+<main>
+    {% if user.is_authenticated %}
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
 
-    <table class="table table-bordered table-striped mb-0" border="1">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col"> File uploaded at:</th>
-            <th scope="col">Url</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for file in files %}
-        <tr>
-            <th scope="row">{{ forloop.counter }}</th>
-            <td>{{file.name}}</td>
-            <td>{{file.uploaded_at}}</td>
-            <td>
-                <a href="{{file.url}}" id="myUrl" class="link" download>Download</a>
-            </td>
-            <td>
+        <table class="table table-bordered table-striped mb-0" border="1">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col"> File uploaded at:</th>
+                <th scope="col">Url</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file in files %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{file.name}}</td>
+                <td>{{file.uploaded_at}}</td>
+                <td>
+                    <a href="{{file.url}}" id="myUrl" class="link" download>Download</a>
+                </td>
+                <td>
 
-                <a class="btn btn-info" href="{% url 'users:del_user_files' name=file.name %}">Delete</a></td>
-        </tr>
-        {% endfor %}
+                    <a class="btn btn-info" href="{% url 'users:del_user_files' name=file.name %}">Delete</a></td>
+            </tr>
+            {% endfor %}
 
-        </tbody>
-    </table>
-    {% endif %}
-</div>
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
 
-<div class="menu">
+    <div class="menu">
 
-    <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
+        <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
 
-</div>
+    </div>
+</main>
+<footer></footer>
 </body>
 </html>

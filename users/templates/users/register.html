@@ -27,24 +27,30 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
 </head>
-<body >
-{% block title %}{% endblock %}
-{% block content %}
-<div class="container">
-    <h1>Create an account</h1>
-    <p>Please, sign up using the following form:</p>
-    <form action="." method="post" class="btn btn-info">
-        {{ user_form|crispy }}
-        {% csrf_token %}
+<body>
+<header></header>
+<main>
+    {% block title %}{% endblock %}
+    {% block content %}
+    <div class="container">
+        <h1>Create an account</h1>
+        <p>Please, sign up using the following form:</p>
+        <form action="." method="post" class="btn btn-info">
+            {{ user_form|crispy }}
+            {% csrf_token %}
 
-        <p> <button type="submit" class="btn btn-primary btn-block">Register</button></p>
-    </form>
-</div>
-<div class="menu">
-    <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
+            <p>
+                <button type="submit" class="btn btn-primary btn-block">Register</button>
+            </p>
+        </form>
+    </div>
+    <div class="menu">
+        <a href="{% url 'mysite:upload_file' %}" class="btn btn-primary">home</a>
 
-</div>
-{% endblock %}
+    </div>
+    {% endblock %}
+</main>
+<footer></footer>
 </body>
 </html>
 
